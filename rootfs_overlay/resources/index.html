@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://nerves.local/static/bulma.min.css">
+    <link rel="stylesheet" href="http://nerves.local/static/styles.css">
+</head>
+<body>
+    <h1 class="is-size-1 pb-5 pl-5 pt-5">Pi-Network Camera</h1>
+    <div class="tile is-ancestor pl-3 is-vertical">
+        <div class="tile is-parent">
+            <div class="tile  is-vertical ">
+                <div class="tile">
+                    <div class="tile is-parent is-vertical">
+                        <form target="dummy" method="get" action="/start" class="tile is-child notification is-primary" id="controls">
+                            <!-- ************** Receiver Adress Form ************** -->
+                            <p class="title">Adress & Time Intervall </p>
+                            <div class="field">
+                                <div class="control">
+                                        <p>Adress:</p>
+                                        <input id="receiver_adress" name="receiver_adress" class="input" type="text" placeholder="Text input">
+                                        <p class="mt-3">Time Intervall:</p>
+                                        <input id="time_intervall" name="time_intervall" class="input" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child notification is-success">
+                    <!-- ************** Image ************** -->
+                    <div class="content" id="image-container">
+                        <p class="subtitle">Last Image:</p>
+                        <img class="image" alt="No recent image" id="last-image">
+                        <div class="content">
+                            <!-- Content -->
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="tile is-parent">
+            <div class="tile">
+                <div class="tile  is-vertical">
+                    <div class="tile is-parent">
+                        <article class="tile is-child notification is-warning" id="status-div">
+                            <!-- ************** Status Metrics ************** -->
+                            <div class="content">
+                                <div>
+                                    <span class="is-size-4 mb-0 has-text-weight-bold">Status:</span>
+                                    <span id="status" class="ml-5 is-size-4">stopped</span>
+                                    <span class="is-size-4 mb-0 has-text-weight-bold">Send-Status:</span>
+                                    <span id="send-status" class="ml-5 is-size-4">null</span>
+                                
+
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="tile  is-vertical btn">
+                    <div class="tile is-parent" id="start_btn">
+                        <article class=" is-clickable tile is-child notification is-info has-text-centered">
+                            <!-- ************** Button-Left ************** -->
+                            <div class="content">
+                                <p class="title">Start</p>
+                                <div class="content">
+                                    <!-- Content -->
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="tile is-parent btn" id="stop_btn">
+                    <article class="is-clickable tile is-child notification is-danger has-text-centered">
+                        <!-- ************** Button-Right ************** -->
+                        <div class="content">
+                            <p class="title ">Stop</p>
+                            <div class="content">
+                                <!-- Content -->
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <iframe id="dummy" name="dummy" frameborder="0"></iframe>
+</body>
+<script src="http://nerves.local/static/app.js"></script>
+</html>

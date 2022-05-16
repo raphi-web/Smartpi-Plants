@@ -1,0 +1,19 @@
+.btn {
+    transition: 0.3s;
+    
+}
+.btn:hover {opacity: 0.7}
+
+#last-image {
+    height: 200;
+    width: auto;
+}
+
+
+#dummy {
+   
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 0;
+}
