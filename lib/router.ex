@@ -7,22 +7,22 @@ defmodule Smartpi.Router do
   forward("/static", to: Webinterface.StaticRouter)
 
   get "/image" do
-    image = Smartpi.IntervallExecutor.get_last_data(TransmitterImage)
+    {response, img} = Smartpi.IntervallExecutor.get_last_data(Image)
 
     send_success =
-      case image.send_status do
-        :error -> false
-        :ok -> true
+      case response.status_code do
+        200 -> true
+        _ -> false
       end
 
     conn
     |> put_resp_content_type("text/json")
-    |> send_resp(200, '{"image":"#{image.value}", "send_success":"#{send_success}"}')
+    |> send_resp(200, '{"image":"#{Base.encode64(img)}", "send_success":"#{send_success}"}')
   end
 
   get "/camera_state" do
     status =
-      case Smartpi.IntervallExecutor.is_running(TransmitterImage) do
+      case Smartpi.IntervallExecutor.is_running(Image) do
         true -> "running"
         false -> "stopped"
       end
@@ -33,7 +33,7 @@ defmodule Smartpi.Router do
   end
 
   get "/stop" do
-    Smartpi.IntervallExecutor.stop(TransmitterImage)
+    Smartpi.IntervallExecutor.stop(Image)
 
     conn
     |> put_resp_content_type("text/json")
@@ -50,9 +50,13 @@ defmodule Smartpi.Router do
     Smartpi.IntervallExecutor.start_link(
       %{
         timer: String.to_integer(timer),
-        exec_func: fn -> Smartpi.Camera.take_send_image(address) end
+        exec_func: fn ->
+          img = Smartpi.Camera.take_image()
+          response = Smartpi.Camera.send_image(img, "http://192.168.1.110:80/image")
+          {response, img}
+        end
       },
-      name: TransmitterImage
+      name: Image
     )
 
     conn

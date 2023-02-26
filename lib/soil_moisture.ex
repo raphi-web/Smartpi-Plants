@@ -43,21 +43,16 @@ defmodule Smartpi.SoilMoisture do
         (capacity - @minDry) / (@maxWet - @minDry)
     end
 
-    {rel_moisture, capacity}
+    rel_moisture
   end
 
-  def get_moisture(n_measurements, address) do
-    {relative_moisture, capacity} = rel_moisture(n_measurements)
+  def send(n_measurements) do
+    relative_moisture = rel_moisture(n_measurements)
 
-    rel_moisture_sensor = relative_moisture
-      |> Smartpi.Sensor.new_sensor("float", "soil", "moisture")
-      |> Smartpi.Sensor.send_sensor(address)
+    tags = %{"device" => "pizero", "kind" => "moisture"}
+    fields = %{"relative" => "#{relative_moisture}"}
+    Smartpi.WriteAPI.send(tags, fields)
 
-    capacity_sensor = capacity
-      |> Smartpi.Sensor.new_sensor("float", "soil", "capacity")
-      |> Smartpi.Sensor.send_sensor(address)
-
-    {rel_moisture_sensor, capacity_sensor}
   end
 
 end

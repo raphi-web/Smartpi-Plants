@@ -1,9 +1,13 @@
 defmodule Smartpi.Camera do
-  def take_send_image(address) do
+  def take_image() do
     Picam.set_size(1280, 0)
     Picam.next_frame()
-    |> Base.encode64()
-    |> Smartpi.Sensor.new_sensor("string", "plants", "camera")
-    |> Smartpi.Sensor.send_sensor(address)
+  end
+
+  def send_image(img, address) do
+    HTTPoison.post!(address, Base.encode64(img), [
+      {"Content-Type", "text/plain; charset=utf-8"},
+      {"Accept", "application/json; text/plain;"}
+    ])
   end
 end

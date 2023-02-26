@@ -157,21 +157,14 @@ defmodule Smartpi.LightIntensity do
     end
   end
 
-  def get_light(adress) do
-
+  def send() do
     light_sensor = new()
     |> read_raw()
     |> calc_lux()
 
-    light_sensor_lux = light_sensor.lux_value
-    |> Smartpi.Sensor.new_sensor("float", "plants","lux")
-    |> Smartpi.Sensor.send_sensor(adress)
-
-    light_sensor_raw = light_sensor.raw_value
-    |> Smartpi.Sensor.new_sensor("float", "plants", "light_raw")
-    |> Smartpi.Sensor.send_sensor(adress)
-
-    {light_sensor_lux, light_sensor_raw}
+    tags = %{"device" => "pizero", "kind" => "light"}
+    fields = %{"lux" => "#{light_sensor.lux_value}", "raw" => "#{light_sensor.raw_value}"}
+    Smartpi.WriteAPI.send(tags, fields)
   end
 
 

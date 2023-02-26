@@ -10,6 +10,7 @@ defmodule Smartpi.IntervallExecutor do
   end
 
   def init(state) do
+    Process.register(self(), state.name)
     schedule_work(state.timer)
     {:ok, Map.put(state, :data, state.exec_func.())}
   end
