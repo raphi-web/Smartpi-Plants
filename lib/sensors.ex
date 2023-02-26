@@ -14,6 +14,14 @@ defmodule Smartpi.Sensor do
   end
 
   def send_sensor(%Smartpi.Sensor{} = sensor, url) do
-     %Smartpi.Sensor{sensor | send_status: 404, status_code:  404 }
+    HTTPoison.start()
+
+    {send_status, %{status_code: status_code}} =
+      HTTPoison.post(
+        url,
+        sensor_to_json(sensor),
+        [{"Content-Type", "text/json"}]
+      )
+     %Smartpi.Sensor{sensor | send_status: send_status, status_code:  status_code }
   end
 end
